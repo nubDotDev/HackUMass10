@@ -1,17 +1,16 @@
 {
     "manifest_version": 3,
-    "name": "Ignorance is Bliss",
+    "name": "Vibe Checkr",
     "version": "1.0.0",
-    "icons": {
-
-    },
+    "icons": {},
 
     "content_scripts": [
         {
-            "js": ["content.js"],
+            "js": [
+                "content.js"
+            ],
             "matches": [
-                "https://nytimes.com/",
-                "https://nytimes.com/*"
+                "<all_urls>"
             ]
         }
     ],

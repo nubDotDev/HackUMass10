@@ -10,7 +10,7 @@
         {
             "js": ["content.js"],
             "matches": [
-                "https://nytimes.com",
+                "https://nytimes.com/",
                 "https://nytimes.com/*"
             ]
         }

@@ -1,0 +1,19 @@
+{
+  "name": "ignorance-is-bliss",
+  "version": "1.0.0",
+  "author": "Justin Steinman, Luke Waldow, Piyush Maheshwari, Nihar Kapasi",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nubDotDev/HackUMass10.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nubDotDev/HackUMass10/issues"
+  },
+  "homepage": "https://github.com/nubDotDev/HackUMass10#readme",
+  "description": ""
+}

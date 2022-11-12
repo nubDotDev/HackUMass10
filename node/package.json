@@ -15,5 +15,8 @@
     "url": "https://github.com/nubDotDev/HackUMass10/issues"
   },
   "homepage": "https://github.com/nubDotDev/HackUMass10#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "sentiment": "^5.0.2"
+  }
 }

@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Ignorance is Bliss",
+    "version": "1.0.0",
+    "icons": {
+
+    },
+
+    "content_scripts": [
+        {
+            "js": ["content.js"],
+            "matches": [
+                "https://nytimes.com",
+                "https://nytimes.com/*"
+            ]
+        }
+    ],
+
+    "action": {
+        "default_popup": "popup.html"
+    }
+}

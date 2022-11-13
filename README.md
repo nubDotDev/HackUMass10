@@ -23,14 +23,16 @@ shall blur out the paragraphs and block quotes meeting the required conditions.
 
 The threshold is defined with the help of a slider. Our slider has 5 levels with a lower value(1) translating to blurring only the most negative paragraphs and block quotes and a higher value(5) translating to blurring even areas that have a low negativity score.
 
-## 4] Challenges we faced
+## 4] Inspiration
 
-## 5] Accomplishments we are proud of
+## 5] Challenges we faced
 
-## 6] What we've learned
+## 6] Accomplishments we are proud of
 
-## 7] What's next
+## 7] What we've learned
 
-## 8] Built with
+## 8] What's next
 
-## 9] Prizes we're going for
+## 9] Built with
+
+## 10] Prizes we're going for

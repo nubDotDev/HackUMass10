@@ -6,6 +6,7 @@ function doCheck(isChecked) {
     chrome.storage.local.set({checked: isChecked}, function() {
         console.log('Value is set to ' + isChecked);
     });
+    enabledBtn.checked = isChecked;
     enabledLabel.innerText = isChecked ? "negative vibes FILTERED" : "filtering OFF";
     chrome.tabs.query({currentWindow: true, active: true}, tabs =>
         chrome.tabs.sendMessage(tabs[0].id, {title: "toggle", value: isChecked}, (res) => chrome.runtime.lastError)
@@ -14,7 +15,7 @@ function doCheck(isChecked) {
 
 chrome.storage.local.get(['checked'], function(result) {
     let val = "checked" in result && result.checked;
-    doChecked(val);
+    doCheck(val);
 });
 
 enabledBtn.addEventListener("change", function (event) {

@@ -18,5 +18,7 @@ To ensure that our program runs efficiently we asynchronously call the sentiment
 
 ## 3] The Chrome extension side
 Our chrome extesion shall send all the paragraphs and block quotes to our server (through a post request utilizing the fetch module of node)
-and get back their positivity/negativity stored in an array in JSON format. Using this information in conjunction with the negativity threshold
-the extension shall blur our the paragraphs and block quotes meeting the required conditions.
+and get back their positivity/negativity. Using this information in conjunction with the negativity threshold the extension 
+shall blur out the paragraphs and block quotes meeting the required conditions.
+
+The threshold is defined with the help of a slider. Our slider has 5 levels with a lower value(1) translating to blurring only the most negative paragraphs and block quotes and a higher value(5) translating to blurring even areas that have a low negativity score.

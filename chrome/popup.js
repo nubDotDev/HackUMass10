@@ -1,11 +1,9 @@
 const enabledBtn = document.getElementById("enabled");
 const enabledLabel = document.getElementById("enabled-label");
+const slider = document.getElementById("sens-range");
 
 function doCheck(isChecked) {
-    //localStorage.setItem('checked', String(isChecked));
-    chrome.storage.local.set({checked: isChecked}, function() {
-        console.log('Value is set to ' + isChecked);
-    });
+    chrome.storage.local.set({checked: isChecked});
     enabledBtn.checked = isChecked;
     enabledLabel.innerText = isChecked ? "negative vibes FILTERED" : "filtering OFF";
     chrome.tabs.query({currentWindow: true, active: true}, tabs =>
@@ -13,20 +11,26 @@ function doCheck(isChecked) {
     );
 }
 
-chrome.storage.local.get(['checked'], function(result) {
-    let val = "checked" in result && result.checked;
-    doCheck(val);
+function setSens(val) {
+    chrome.storage.local.set({sens: val});
+    slider.value = val;
+    chrome.tabs.query({currentWindow: true, active: true}, tabs =>
+        chrome.tabs.sendMessage(tabs[0].id, {title: "sens", value: val}, (res) => chrome.runtime.lastError)
+    );
+}
+
+chrome.storage.local.get(["checked"], result => {
+    doCheck("checked" in result && result.checked);
 });
 
-enabledBtn.addEventListener("change", function (event) {
-    let isChecked = enabledBtn.checked;
-    doCheck(isChecked);
+enabledBtn.addEventListener("change", () => {
+    doCheck(enabledBtn.checked);
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.title === "toggle") {
-        let enabled = message.value || false;
-        if (enabled) censor();
-        sendResponse(enabled);
-    }
-});
+chrome.storage.local.get(["sens"], result => {
+    setSens("sens" in result ? result.sens : 2);
+})
+
+slider.addEventListener("change", () => {
+    setSens(slider.value);
+})

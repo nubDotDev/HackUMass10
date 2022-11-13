@@ -6,7 +6,6 @@ that meet a certain threshold that is selected by the user. The phrases are blur
 similar to the inspect element feature on google chrome.
 
 We have divided out service into two components - a chrome extension (in JavaScript) and a server (in Python).
-The chrome extension will be sending any paragraphs and block quotes from the current webpage to our server along with 
-the negativoty threshold that the user has selected through a slider.
-Our server in turn will return an array of objects cotaining a status flag that takes values POSITIVE/NEGATIVE and 
-a score relating to the extent of the positivity or negativity for each such unit (paragraph and block quotes)
+Our chrome extension will essentially pass in the contents of the currrent webpage to our server.
+Our sever shall then classify this data as positive or negative along with a score relating to the extent of the positivity/negativity.
+We return this information back to our chrome extension which will then blur out areas whose negativity score meets the user's threshold

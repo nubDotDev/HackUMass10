@@ -13,13 +13,7 @@ pipe = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 @app.route("/")
 def index():
-    print("request.json")
-    # if request.method != "POST":
-    #     return "Error"
-    inputs = ["good question."] 
-    pipe = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
-    result = pipe(inputs)
-    return result
+    return "Error"
 
 @app.route("/sentiment-analysis", methods=["GET", "POST"])
 def sentiment_analysis():

@@ -17,11 +17,11 @@ function getTabInfo(tabId) {
 }
 
 chrome.tabs.onActivated.addListener(function(activeInfo) {
-  getTabInfo(activeTabId = activeInfo.tabId);
+    getTabInfo(activeTabId = activeInfo.tabId);
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  if(activeTabId == tabId) {
-    getTabInfo(tabId);
-  }
+    if(activeTabId == tabId) {
+      getTabInfo(tabId);
+    }
 });

@@ -9,14 +9,19 @@
     <link rel="stylesheet" href="./popup.css"/>
 </head>
 <body>
-    <p>Hello, world!</p>
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="enabled">
-        <label class="form-check-label" for="enable">Filtering negative vibes</label>
+    <div id="title-container">
+        <div id="title" class="text-primary">VibeCheckr</div>
+        <div id="divider"></div>
     </div>
-    <div class="form-range">
-        <label for="customRange1" class="form-label">Example range</label>
-        <input type="range" class="form-range" id="sensRange">
+    <div id="content-container">
+        <div id="btn-div">
+            <input type="checkbox" class="btn-check" id="enabled" autocomplete="off">
+            <label class="btn btn-outline-primary" id="enabled-label" for="enabled">filtering OFF</label>
+        </div>
+        <div class="range-container">
+            <label for="customRange1" class="form-label text-muted">Filtering sensitivity:</label>
+            <input type="range" class="form-range" min="0" max="10" id="sensRange">
+        </div>
     </div>
     <script src="./popup.js"></script>
 </body>

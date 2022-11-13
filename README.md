@@ -1,10 +1,10 @@
 # HackUMass10
 
 ## 1] Description
-### 1.1] Lesser Header
-We have designed a chrome extension that will run sentiment analysis on the current web page and blur out negative phrases meeting a certain threshold.
-The threshold is selected by the user of the extension through a slider.
+Our service shall run sentiment analysis on the current web page that the user is in and blur out any negative phrases
+that meet a certain threshold that is selected by the user. The phrases are blurred out only for the user 
+similar to the inspect element feature on google chrome.
 
-Our project consists of two main parts - the chrome extension (in JavaScript) and a server (in Python).
-The chrome extension will be sending any paragraphs and block quotes from the current version to our server.
+We have divided out service into two components - a chrome extension (in JavaScript) and a server (in Python).
+The chrome extension will be sending any paragraphs and block quotes from the current webpage to our server.
 Our server will return a 

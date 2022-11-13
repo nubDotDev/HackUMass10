@@ -36,7 +36,8 @@ Thus we had to switch to a post request instead which made us take a look at the
 
 
 Another significant challenge was ensuring that we were saving the blurred version of the webpage so that getting back to that page
-(through switching tabs) does not rerun our service in order to lessen our run times.
+(through switching tabs) does not rerun our service. Also we wanted to ensure that our service runs on any other tabs accessed while the extension is turned off.
+We had to use the chrome storage api.
 
 Another challenge was the front end of our chrome extension. Only one person in our group had any experience with front end which was minimal.
 In the end, however, we were able to figure out how to beautify our extension and make it more user-friendly.
@@ -48,5 +49,7 @@ In the end, however, we were able to figure out how to beautify our extension an
 ## 8] What's next
 
 ## 9] Built with
+While our server was in python, the chrome extension was majorly in Javascript (node.js). We also utilized 
+html and css for the pop-up of our extension.
 
 ## 10] Prizes we're going for

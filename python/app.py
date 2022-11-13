@@ -16,7 +16,7 @@ def index():
     print("request.json")
     # if request.method != "POST":
     #     return "Error"
-    inputs = ["I am happy when I kill", "you are the sweetest person ever"] 
+    inputs = ["good question."] 
     pipe = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
     result = pipe(inputs)
     return result

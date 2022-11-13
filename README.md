@@ -40,11 +40,15 @@ Another significant challenge was ensuring that we were saving the blurred versi
 We had to use the chrome storage api.
 
 Another challenge was the front end of our chrome extension. Only one person in our group had any experience with front end which was minimal.
-In the end, however, we were able to figure out how to beautify our extension and make it more user-friendly.
+In the end, however, we were able to figure out how to beautify our extension and make it more user-friendly. 
 
 ## 6] Accomplishments we are proud of
 
 ## 7] What we've learned
+One thing we realized was how tough sentimental analysis is. 
+Our testing revealed that certain words have unnecessarily low scores such as cotton and some words were classified as negative
+which is not very intuitive such as the shape triangle. 
+
 
 ## 8] What's next
 

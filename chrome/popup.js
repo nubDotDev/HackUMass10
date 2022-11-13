@@ -18,11 +18,3 @@ enabledBtn.addEventListener("change", function (event) {
     let isChecked = enabledBtn.checked;
     doCheck(isChecked);
 });
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.title === "get-enabled") {
-        let enabled = message.value || false;
-        if (enabled) censor();
-        sendResponse(enabled.checked);
-    }
-});

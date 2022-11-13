@@ -1,9 +1,6 @@
-let enabled = false;
-
-const censorStyle = document.createElement("style");
-censorStyle.classList.add("censor-style");
-censorStyle.innerHTML = `
-.censored {
+function censoredXStyle(x) {
+    return x +
+` {
     color: transparent;
     text-shadow: 0 0 10px rgba(0,0,0,0.5);
     -webkit-user-select: none; /* Safari */        
@@ -12,19 +9,39 @@ censorStyle.innerHTML = `
     user-select: none; /* Standard */
 }
 `;
+}
 
-chrome.runtime.sendMessage({ title: "get-enabled" }, (res) => {
-    enabled = res;
-    if (enabled) censor();
-    else decensor();
-});
+const sensCount = 5;
+
+const censorStyleInners = [];
+function initCensorStyles() {
+    let classes = '.censored-1';
+    for (let i = 2; i <= sensCount; ++i) {
+        censorStyleInners.push(censoredXStyle(classes))
+        classes += ",.censored-" + i;
+    }
+    censorStyleInners.push(censoredXStyle(classes))
+}
+initCensorStyles();
+
+const censorStyle = document.createElement("style");
+censorStyle.classList.add("censor-style");
+censorStyle.innerHTML = censorStyleInners[sensCount - 1];
+
+const sensLevels = [-0.995, -0.99, -0.95, -0.9, 0];
+function calcSens(x) {
+    for (let i = 0; i < sensCount; ++i) {
+        if (x < sensLevels[i - 1]) return i + 1;
+    }
+}
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.title === "toggle") {
-        enabled = message.value || false;
-        if (enabled) censor();
+        if (message.value) censor();
         else decensor();
         sendResponse("Vibe Checkr toggled");
+    } else if (message.title === "sens") {
+        censorStyle.innerHTML = censorStyleInners[message.value];
     }
 });
 
@@ -36,7 +53,7 @@ function censor() {
         // Whole document
         paragraphsSentiment(sentences).then(res => {
             toCensor.forEach((p, i) => {
-                p.innerHTML = res[i].map((x, j) => x >= 0 ? sentences[i][j] : "<span class='censored'>" + sentences[i][j] + "</span>").join("");
+                p.innerHTML = res[i].map((x, j) => x >= 0 ? sentences[i][j] : "<span class='censored-" + calcSens(x) + "'>" + sentences[i][j] + "</span>").join("");
             });
             document.body.appendChild(document.createElement("censored"));
         });
@@ -69,13 +86,15 @@ function getCensorable() {
     return [...Array.from(document.getElementsByTagName("p")), ...Array.from(document.getElementsByTagName("blockquote"))];
 }
 
+const sentenceBreaks = [".", "?", "!", ":", ";", "(", ")", "\n"];
+
 function separateParagraph(p) {
     const res = [];
     let start = 0;
     for (let i = 0; i < p.length - 1; ++i) {
-        if (p[i] === ".") {
+        if (sentenceBreaks.includes(p[i])) {
             let j = i + 1;
-            for (; j < p.length - 1 && [" ", "\n", "."].includes(p[j]); ++j);
+            for (; j < p.length && (sentenceBreaks.includes(p[j]) || p[j] === " "); ++j);
             if (j - i > 1) {
                 res.push(p.substring(start, j));
                 i = j - 1;

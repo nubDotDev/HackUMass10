@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import pipeline 
 
@@ -9,7 +9,15 @@ tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst
 model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
 
 @app.route("/")
-def hello_world():
+def index():
+    return "Error"
+
+@app.route("/sentiment-analysis", methods=["GET", "POST"])
+def sentiment_analysis():
+    print("AHAHAHAH")
+    print(request.json)
+    if request.method != "POST":
+        return "Error"
     inputs = ["I am happy when I kill", "you are the sweetest person ever"] 
     pipe = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
     result = pipe(inputs)

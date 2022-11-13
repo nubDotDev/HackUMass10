@@ -29,16 +29,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 function censor() {
-    // fetch("http://127.0.0.1:5000/sentiment-analysis").then(res => res.json()).then(console.log);
     if (document.getElementsByTagName("censored").length === 0) {
         const toCensor = getCensorable();
         const sentences = toCensor.map(p => separateParagraph(p.innerHTML));
-        Promise.all(sentences.map(p => Promise.all(p.map(s => sentiment(s).then(res => res >= 0 ? s : "<span class='censored'>" + s + "</span>"))))).then(res => {
+
+        // Whole document
+        paragraphsSentiment(sentences).then(res => {
             toCensor.forEach((p, i) => {
-                p.innerHTML = res[i].join(". ");
+                p.innerHTML = res[i].map((x, j) => x >= 0 ? sentences[i][j] : "<span class='censored'>" + sentences[i][j] + "</span>").join("");
             });
             document.body.appendChild(document.createElement("censored"));
         });
+
+        // Per paragraph
+        // Promise.all(sentences.map(p => paragraphSentiment(p).then(res => res.map((x, i) => x >= 0 ? p[i] : "<span class='censored'>" + p[i] + "</span>")))).then(res => {
+        //     toCensor.forEach((p, i) => {
+        //         p.innerHTML = res[i].join("");
+        //     });
+        //     document.body.appendChild(document.createElement("censored"));
+        // });
+
+        // Per sentence
+        // Promise.all(sentences.map(p => Promise.all(p.map(s => sentiment(s).then(res => res >= 0 ? s : "<span class='censored'>" + s + "</span>"))))).then(res => {
+        //     toCensor.forEach((p, i) => {
+        //         p.innerHTML = res[i].join("");
+        //     });
+        //     document.body.appendChild(document.createElement("censored"));
+        // });
     }
     if (document.getElementsByClassName("censor-style").length === 0)
         document.head.appendChild(censorStyle);
@@ -49,15 +66,28 @@ function decensor() {
 }
 
 function getCensorable() {
-    return Array.from(document.getElementsByTagName("p"));
+    return [...Array.from(document.getElementsByTagName("p")), ...Array.from(document.getElementsByTagName("blockquote"))];
 }
 
 function separateParagraph(p) {
-    return p.split('. ');
+    const res = [];
+    let start = 0;
+    for (let i = 0; i < p.length - 1; ++i) {
+        if (p[i] === ".") {
+            let j = i + 1;
+            for (; j < p.length - 1 && [" ", "\n", "."].includes(p[j]); ++j);
+            if (j - i > 1) {
+                res.push(p.substring(start, j));
+                i = j - 1;
+                start = j;
+            }
+        }
+    }
+    res.push(p.substring(start, p.length));
+    return res;
 }
 
-function sentiment(s) {
-    // return Math.random() * 2 - 1;
+function textSentiment(s) {
     return fetch("http://127.0.0.1:5000/sentiment-analysis", {
         method: 'POST',
         headers: {
@@ -65,4 +95,24 @@ function sentiment(s) {
         },
         body: JSON.stringify({text: s})
     }).then(res => res.json()).then(res => (res[0].label === "POSITIVE" ? 1 : -1) * res[0].score);
+}
+
+function paragraphSentiment(p) {
+    return fetch("http://127.0.0.1:5000/sentiment-analysis", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json; charset=utf8"
+        },
+        body: JSON.stringify({paragraph: p})
+    }).then(res => res.json()).then(res => res.map(x => (x.label === "POSITIVE" ? 1 : -1) * x.score));
+}
+
+function paragraphsSentiment(ps) {
+    return fetch("http://127.0.0.1:5000/sentiment-analysis", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json; charset=utf8"
+        },
+        body: JSON.stringify({paragraphs: ps})
+    }).then(res => res.json()).then(res => res.map(p => p.map(x => (x.label === "POSITIVE" ? 1 : -1) * x.score)));
 }

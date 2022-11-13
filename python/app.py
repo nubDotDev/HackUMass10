@@ -9,6 +9,7 @@ CORS(app)
 # we need to load a tokenizer and the model, you can usually find this on the model card
 tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
 model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+pipe = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 @app.route("/")
 def index():
@@ -24,11 +25,17 @@ def index():
 def sentiment_analysis():
     if request.method != "POST":
         return "Error"
-    # inputs = ["I am happy when I kill", "you are the sweetest person ever"] 
-    inputs = [request.get_json()["text"]]
-    pipe = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
-    result = pipe(inputs)
-    return result
+    req_json = request.get_json()
+    if "paragraphs" in req_json:
+        res = []
+        for paragraph in req_json["paragraphs"]:
+            res.append(pipe(paragraph))
+        return res
+    if "paragraph" in req_json:
+        return pipe(req_json["paragraph"])
+    elif "text" in req_json:
+        return pipe([req_json["text"]])
+    return []
 
 
 if __name__ == "__main__":
